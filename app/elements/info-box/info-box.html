@@ -10,39 +10,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="main-app">
+<dom-module id="info-box">
   <template>
     <style>
       :host {
         display: block;
       }
     </style>
-
-    <data-provider data="{{data}}"></data-provider>
-    <info-box data="{{data}}"></info-box>
-    
+    <hub-info sport-list="{{data.sports}}" selected="{{selectedSport}}"></hub-info>
   </template>
   <script>
   (function() {
     'use strict';
 
     Polymer({
-      is: 'main-app',
+      is: 'info-box',
 
       properties: {
         data: {
-          type: Object,
-          value: {            
-              sports: [],
-              places: [],
-              current: {
-                sport: null,
-                place: null
-              }
-          },
+          type: Object,          
           notify: true
-       }
-      },      
+        },
+        selectedSport: {
+          type: Object,
+          notify: true,
+          observer: '_onSelectedSportChange'
+        }        
+      },
+      //set current sport here
+      _onSelectedSportChange: function(newval) {
+         console.log('current sport', newval);
+         this.set('data.current.sport', newval);
+      }
     });
   })();
   </script>

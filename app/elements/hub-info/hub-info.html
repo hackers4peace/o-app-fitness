@@ -1,0 +1,78 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="hub-info">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+     <paper-material elevation="1">         
+      <paper-tabs selected="{{selectedTab}}">       
+       <paper-tab>
+           <iron-icon icon="maps:directions-run"></iron-icon>
+        </paper-tab>
+        <paper-tab>Tab 2</paper-tab>
+        <paper-tab>Tab 3</paper-tab>
+      </paper-tabs>
+      <iron-pages selected="{{selectedTab}}">          
+         <div role="listbox">
+           <iron-selector selected="{{selectedIndex}}">
+           <template is="dom-repeat" items="{{sportList}}">
+              <paper-icon-item>
+                <iron-icon src="{{item.icon}}" class="big" item-icon></iron-icon>
+                <div class="flex"> {{item.nameMap.en}}</div>              
+              </paper-icon-item>
+            </template>        
+          </iron-selector>             
+          </div>            
+          <div>Page 2</div>
+          <div>Page 3</div>
+        </iron-pages>
+      </paper-material>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'hub-info',
+
+      properties: {
+
+        selectedTab: {
+          type: String,          
+          notify: true,
+        },
+        selectedIndex: {
+          type: Object,
+          value: null,
+          observer: '_onSelectedIndexChange'
+        },
+        selected: {
+          type: Object,
+          notify: true
+        },
+        sportList: {
+          type: Array
+        }
+      },
+      _onSelectedIndexChange: function(newval) {
+        if (typeof(newval) === 'number') {        
+          this.selected = this.sportList[newval];
+        }
+      },
+    });
+  })();
+  </script>
+</dom-module>
