@@ -56,15 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true
         },
         data: {
-          type: Object,
-          value: {            
-            sports: [],
-            places: [],
-            current: {
-              sport: null,
-              place: null
-            }
-          },
+          type: Object,         
           notify: true
         },
         sportListId: {
@@ -116,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var respData = detail.response;
         var graph = respData['@graph'];
 
-        this.data.sports = graph[0].contains;
+        this.set('data.sports', graph[0].contains);
 
         this.sportListLoaded = true;
       },
@@ -124,8 +116,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       handlePlaceListResponse: function (e, detail) {
         var respData = detail.response;
         var graph = respData['@graph'];
-
-        this.data.places = graph[0].contains;
+        
+        this.set('data.places', graph[0].contains);
 
         this.placeListLoaded = true;
       }

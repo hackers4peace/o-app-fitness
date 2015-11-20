@@ -22,9 +22,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 100%;      
       }    
     </style>
-    
+
     <leaflet-map latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" no-zoom-control>           
        <leaflet-geolocation watch enableHighAccuracy latitude="{{latitude}}" longitude="{{longitude}}"></leaflet-geolocation>
+      
+      <template is="dom-repeat" items="{{data.places}}">
+        <leaflet-marker id="{{item.id}}" latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="Transparent" opacity="0.6">
+        </leaflet-marker> 
+      </template>      
+
     </leaflet-map>
 
   </template>
@@ -36,6 +42,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'sport-map',
 
       properties: {
+
+        data: {
+          type: Object,
+          notity: true
+        },
+
         latitude: {
             type: Number,
             value: 0
@@ -46,8 +58,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         zoom: {
             type: Number,
-            value: 15
-        }    
+            value: 11
+        }        
       }
     });
   })();
