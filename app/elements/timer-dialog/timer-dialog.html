@@ -16,21 +16,97 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+
+      .timer {
+        margin: 10px;
+        padding: 10px;        
+        font-weight: bold;
+        font-size: 20px;
+        text-align: center;
+      }
+
     </style>
-    <div>Hello from <span>{{foo}}</span></div>
+  
+    <paper-dialog opened="{{opened}}" modal="true" no-cancel-on-esc-key="true" on-iron-overlay-opened="handleDialogOpen">
+                  
+        <div clas="stop">    
+          <paper-button id="stop-button" toggles raised noink disabled="{{isFinished}}" on-click="handleStopButtonClick" autofocus>
+            STOP
+          </paper-button>
+        </div>
+        <div class="timer">
+          <span>{{timeElapsed}}</span>
+        </div>
+    </paper-dialog>
   </template>
   <script>
   (function() {
     'use strict';
 
+    /* global moment */
+
     Polymer({
       is: 'timer-dialog',
-
       properties: {
-        foo: {
-          type: String,
-          value: 'timer-dialog',
+
+        opened: {
+          type: Boolean,
+          value: false,
           notify: true
+        },
+      
+        isRunning: {
+          type: Boolean,
+          value: false          
+        },
+
+        isFinished: {
+          type: Boolean,
+          value: false
+        },
+
+        seconds: {
+          type: Number,
+          value: 0
+        },                
+
+        timeElapsed: {
+          type: String,
+          computed: 'getTimeElapsed(seconds)'
+        }      
+      },
+
+      handleDialogOpen: function() {
+        this.isFinished = false;
+        this.seconds = 0;
+        this.isRunning = false;
+        this.startTimer();
+      },
+    
+      getTimeElapsed: function (sec) {
+        return moment().hour(0).minute(0).second(sec).format('HH : mm : ss');
+      },      
+      startTimer: function () {
+        this.isRunning = true;
+        this.createTimer();
+      },
+      stopTimer: function() {
+        this.isRunning = false;
+        this.isFinished = true;
+      },
+      createTimer: function() {
+        if(this.isRunning) {
+          this.seconds += 1;
+          this.async(this.createTimer, 1000);
+        }
+      },
+
+      handleStopButtonClick: function() {
+        if (this.isRunning) {
+           this.stopTimer();
+           this.async(function() {
+              this.opened = false;
+           }, 200);
         }
       }
     });

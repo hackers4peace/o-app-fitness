@@ -47,7 +47,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               places: [],
               current: {
                 sport: null,
-                place: null
+                place: null,
+                activity: null
               }
           },
           notify: true
@@ -56,14 +57,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        view: {
           type: String,          
           value: 'map', //lets make map default view
-          notify: true          
+          notify: true,
+          observer: '_onViewChanged'
         }
       },
       observers: [        
         'currentSportChanged(data.current.sport)',
         'currentPlaceChanged(data.current.place)'
       ],     
-    
+
       currentSportChanged: function(value) {
         if (value)  {
           this.view = 'map';
@@ -73,7 +75,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (value)  {
           this.view = 'infobox';
         }          
-      }
+      },
+      _onViewChanged: function () {
+        
+         if (this.view === 'map') {          
+           //in order to get back to "hub" context           
+           this.set('data.current.place', null);
+         }
+      },
     });
   })();
   </script>

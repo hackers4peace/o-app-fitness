@@ -22,12 +22,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 100%;      
       }    
     </style>
+    <!-- temporarly use icons hosted on github -->
+    <leaflet-icon id="marker" icon-url="https://raw.githubusercontent.com/Leaflet/Leaflet/master/dist/images/marker-icon.png"> </leaflet-icon>    
 
     <leaflet-map latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" no-zoom-control>           
        <leaflet-geolocation watch enableHighAccuracy latitude="{{latitude}}" longitude="{{longitude}}"></leaflet-geolocation>
       
       <template is="dom-repeat" items="{{places}}">
-        <leaflet-marker id="{{item.id}}" latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="Transparent" opacity="0.6" on-click="markerClick">
+        <leaflet-marker id="{{item.id}}" latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="Transparent" opacity="0.6" on-click="markerClick" icon="marker">
         </leaflet-marker> 
       </template>      
 
@@ -69,8 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           notity: true
         }
-      },
-
+      },      
       _onViewChanged: function(newval) {
         
         if (newval === 'map') {
@@ -79,7 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           //set pois here
           if (this.data.places && this.data.current.sport) {
             this.places = _.filter(this.data.places, function (p) {
-              return _.includes(p['lgdo:featuresSport'], this.data.current.sport.id);
+              return _.includes(p.featuresSport, this.data.current.sport.id);
             }.bind(this));
           }              
         }
@@ -88,8 +89,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       markerClick: function(e) {              
+        
         if (e.model.item) {                        
-          this.set('  data.current.place', e.model.item);        
+          this.set('data.current.place', e.model.item);        
         }
       }    
     });

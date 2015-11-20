@@ -79,7 +79,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           computed: 'getDataReady(sportListLoaded,placeListLoaded)',
         }
       },
-
+      observers: [
+         'currentActivityChanged(data.current.activity)',
+      ],
+      currentActivityChanged: function(newval) {
+        console.log(newval);
+      },
       getDataReady: function (sportListLoaded, placeListLoaded) {
           var isReady = sportListLoaded && placeListLoaded;
 

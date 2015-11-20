@@ -10,7 +10,8 @@
     "page": "visionmedia/page.js#~1.6.3",
     "underscore": "~1.8.3",
     "lodash": "~3.10.1",
-    "leaflet-map": "~1.1.0"
+    "leaflet-map": "~1.1.0",
+    "moment": "~2.10.6"
   },
   "devDependencies": {
     "web-component-tester": "*",

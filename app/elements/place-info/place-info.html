@@ -15,7 +15,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
+      },
+      .timer-control {
+        text-align:center;
+        margin:20px;
+        padding:20px;
       }
+      #start-stop {
+        margin: 0 auto;
+      }
+
     </style>
      <paper-material elevation="1">         
       <paper-tabs selected="{{selectedTab}}">       
@@ -26,10 +35,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-tab>Tab 3</paper-tab>
       </paper-tabs>
       <iron-pages selected="{{selectedTab}}">
-          <div style="text-align:center;margin:20px;padding:20px">
-            <span>{{place.id}}</span>          
-            <!-- replace with fab ? -->
-            <paper-button id="start-button" toggles raised noink on-click="handleStartButtonClick" autofocus style="margin: 0 auto;">
+          <div class="timer-control">                  
+            <timer-dialog opened="{{timerDialogOpened}}"></timer-dialog>
+            <paper-button id="start-button" toggles raised noink on-click="handleStartButtonClick" autofocus>
               START
             </paper-button>
           </div>
@@ -48,10 +56,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {       
         place: {
           type: Object          
+        },
+        timerDialogOpened: {
+          type: Boolean,
+          value: false          
+        },
+        selectedTab: {
+          type: Number,
+          value: 0
         }
       },
       handleStartButtonClick: function() {
-        console.log('start button!');
+        this.timerDialogOpened = true;
       }
     });
   })();
