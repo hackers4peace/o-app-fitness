@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <leaflet-map latitude="{{latitude}}" longitude="{{longitude}}" zoom="{{zoom}}" no-zoom-control>           
        <leaflet-geolocation watch enableHighAccuracy latitude="{{latitude}}" longitude="{{longitude}}"></leaflet-geolocation>
       
-      <template is="dom-repeat" items="{{data.places}}">
+      <template is="dom-repeat" items="{{places}}">
         <leaflet-marker id="{{item.id}}" latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="Transparent" opacity="0.6">
         </leaflet-marker> 
       </template>      
@@ -62,12 +62,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         zoom: {
             type: Number,
             value: 11
-        }  
+        },
+        places: {
+          type: Array,
+          notity: true
+        }
       },
+
       _onViewChanged: function(newval) {
         console.log(newval);
         if (newval === 'map') {
           this.style.display = "block";             
+
+          //set pois here
+          if (this.data.places && this.data.current.sport) {
+            this.places = _.filter(this.data.places, function (p) {
+              return _.includes(p['lgdo:featuresSport'], this.data.current.sport.id);
+            }.bind(this));
+          }              
         }
         if (newval === 'infobox') {
           this.style.display = "none";

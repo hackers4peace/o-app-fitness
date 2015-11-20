@@ -39,12 +39,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'main-app',
 
-      properties: {
-        view: {
-          type: String,          
-          value: 'map', //lets make map default view
-          notify: true          
-        },
+      properties: {        
         data: {
           type: Object,
           value: {            
@@ -56,8 +51,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
           },
           notify: true
-       } 
-      }    
+       },
+       //view must be defined after data
+       view: {
+          type: String,          
+          value: 'map', //lets make map default view
+          notify: true          
+        }
+      },
+      observers: [        
+        'currentSportChanged(data.current.sport)'
+      ],     
+    
+      currentSportChanged: function(value) {
+        if (value)  {
+          this.view = 'map';
+        }          
+      },    
     });
   })();
   </script>
