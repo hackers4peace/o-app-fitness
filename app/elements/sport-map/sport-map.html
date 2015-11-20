@@ -27,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        <leaflet-geolocation watch enableHighAccuracy latitude="{{latitude}}" longitude="{{longitude}}"></leaflet-geolocation>
       
       <template is="dom-repeat" items="{{places}}">
-        <leaflet-marker id="{{item.id}}" latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="Transparent" opacity="0.6">
+        <leaflet-marker id="{{item.id}}" latitude="{{item.latitude}}" longitude="{{item.longitude}}" title="Transparent" opacity="0.6" on-click="markerClick">
         </leaflet-marker> 
       </template>      
 
@@ -37,6 +37,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
   (function() {
     'use strict';
+
+    /* global _ */
 
     Polymer({
       is: 'sport-map',
@@ -70,9 +72,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _onViewChanged: function(newval) {
-        console.log(newval);
+        
         if (newval === 'map') {
-          this.style.display = "block";             
+          this.style.display = 'block';             
 
           //set pois here
           if (this.data.places && this.data.current.sport) {
@@ -82,9 +84,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }              
         }
         if (newval === 'infobox') {
-          this.style.display = "none";
+          this.style.display = 'none';
         }
-      }      
+      },
+      markerClick: function(e) {              
+        if (e.model.item) {                        
+          this.set('  data.current.place', e.model.item);        
+        }
+      }    
     });
   })();
   </script>

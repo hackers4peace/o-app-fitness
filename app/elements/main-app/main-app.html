@@ -60,7 +60,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       observers: [        
-        'currentSportChanged(data.current.sport)'
+        'currentSportChanged(data.current.sport)',
+        'currentPlaceChanged(data.current.place)'
       ],     
     
       currentSportChanged: function(value) {
@@ -68,6 +69,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.view = 'map';
         }          
       },    
+      currentPlaceChanged: function(value) {
+        if (value)  {
+          this.view = 'infobox';
+        }          
+      }
     });
   })();
   </script>

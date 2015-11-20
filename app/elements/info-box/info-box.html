@@ -17,8 +17,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <hub-info sport-list="{{data.sports}}" selected="{{selectedSport}}"></hub-info>
-     <!-- component needs to at the end of the content div -->    
+    
+    <template is="dom-if" if="{{!data.current.place}}">
+      <hub-info sport-list="{{data.sports}}" selected="{{selectedSport}}"></hub-info>
+    </template>
+    <template is="dom-if" if="{{data.current.place}}">
+     
+      <place-info place="{{data.current.place}}"></place-info>
+    </template>
+    
   </template>
   <script>
   (function() {
@@ -43,17 +50,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }        
       },
       //set current sport here
-      _onSelectedSportChange: function(newval) {
-         console.log('current sport', newval);
+      _onSelectedSportChange: function(newval) {         
          this.set('data.current.sport', newval);
       },
-      _onViewChanged: function(newval) {
-        console.log("view in infobox", newval);
+      _onViewChanged: function(newval) {        
         if (newval === 'infobox') {                  
-          this.style.display = "block";
+          this.style.display = 'block';
         }
         if (newval === 'map') {
-          this.style.display = "none";
+          this.style.display = 'none';
         }
       }      
     });

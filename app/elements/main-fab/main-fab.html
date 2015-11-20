@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         view: {
           type: String,          
-          notify: true          
+          notify: true   
         },
         fabIcon: {
           type: String,
@@ -41,19 +41,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },  
       //toggle icon when clicked
-      handleFabClick: function (e) {
+      handleFabClick: function () {
         //just toggle view
         if (this.view === 'infobox') {          
           this.view = 'map';
         } else {
           this.view = 'infobox';          
-        }        
+        }                
       },      
       getIconName: function (view) {        
         if (view === 'infobox') {
-          return "maps:place";
+          return 'maps:place';
         } else {
-          return "menu"
+          return 'menu';
         }
       }
     });
