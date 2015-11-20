@@ -16,11 +16,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
-    </style>
-
-    <data-provider data="{{data}}"></data-provider>
-    <info-box data="{{data}}"></info-box>
+    </style>    
     
+     <div id="main-app">
+      <data-provider data="{{data}}"></data-provider>
+      <section>
+          <sport-map data="{{data}}" view="{{view}}"></sport-map>
+      </section> 
+      <section>
+           <info-box data="{{data}}" view="{{view}}"></info-box>
+      </section>
+
+      <!-- component needs to at the end of the content div -->
+      <main-fab view="{{view}}"></main-fab>     
+    </div>  
+      
   </template>
   <script>
   (function() {
@@ -30,6 +40,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'main-app',
 
       properties: {
+        view: {
+          type: String,          
+          value: 'map', //lets make map default view
+          notify: true          
+        },
         data: {
           type: Object,
           value: {            
@@ -41,8 +56,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
           },
           notify: true
-       }
-      },      
+       } 
+      }    
     });
   })();
   </script>

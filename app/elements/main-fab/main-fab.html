@@ -10,14 +10,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+
 <dom-module id="main-fab">
   <template>
     <style>
       :host {
         display: block;
-      }
+        position: fixed;
+        bottom: 50px;
+        right: 10px;
+      }      
     </style>
-    <div>Hello from <span>{{foo}}</span></div>
+   <paper-fab id="fab-settings" icon="{{fabIcon}}" on-click="handleFabClick"></paper-fab>
   </template>
   <script>
   (function() {
@@ -27,13 +31,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'main-fab',
 
       properties: {
-        foo: {
+        view: {
+          type: String,          
+          notify: true          
+        },
+        fabIcon: {
           type: String,
-          value: 'main-fab',
-          notify: true
+          computed: 'getIconName(view)'
+        }
+      },  
+      //toggle icon when clicked
+      handleFabClick: function (e) {
+        //just toggle view
+        if (this.view === 'infobox') {          
+          this.view = 'map';
+        } else {
+          this.view = 'infobox';          
+        }        
+      },      
+      getIconName: function (view) {        
+        if (view === 'infobox') {
+          return "maps:place";
+        } else {
+          return "menu"
         }
       }
     });
+
   })();
   </script>
 </dom-module>

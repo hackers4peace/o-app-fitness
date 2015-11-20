@@ -18,6 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <hub-info sport-list="{{data.sports}}" selected="{{selectedSport}}"></hub-info>
+     <!-- component needs to at the end of the content div -->    
   </template>
   <script>
   (function() {
@@ -27,6 +28,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'info-box',
 
       properties: {
+        view: {
+          type: String,
+          observer: '_onViewChanged'
+        },
         data: {
           type: Object,          
           notify: true
@@ -41,7 +46,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _onSelectedSportChange: function(newval) {
          console.log('current sport', newval);
          this.set('data.current.sport', newval);
-      }
+      },
+      _onViewChanged: function(newval) {
+        console.log("view in infobox", newval);
+        if (newval === 'infobox') {                  
+          this.style.display = "block";
+        }
+        if (newval === 'map') {
+          this.style.display = "none";
+        }
+      }      
     });
   })();
   </script>

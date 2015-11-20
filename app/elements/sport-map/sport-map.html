@@ -42,7 +42,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'sport-map',
 
       properties: {
-
+        view: {
+          type: String,
+          observer: '_onViewChanged'
+        },
         data: {
           type: Object,
           notity: true
@@ -59,8 +62,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         zoom: {
             type: Number,
             value: 11
-        }        
-      }
+        }  
+      },
+      _onViewChanged: function(newval) {
+        console.log(newval);
+        if (newval === 'map') {
+          this.style.display = "block";             
+        }
+        if (newval === 'infobox') {
+          this.style.display = "none";
+        }
+      }      
     });
   })();
   </script>

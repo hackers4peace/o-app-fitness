@@ -49,7 +49,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'hub-info',
 
       properties: {
-
+        view: {
+          type: String,
+          notify: true
+        },
         selectedTab: {
           type: String,          
           notify: true,
@@ -70,6 +73,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _onSelectedIndexChange: function(newval) {
         if (typeof(newval) === 'number') {        
           this.selected = this.sportList[newval];
+        }
+      },
+      _onViewChanged: function(newval) {
+        if (newval === 'infobox') {                  
+          this.style.display = "block";
+        }
+        if (newval === 'map') {
+          this.style.display = "none";
         }
       },
     });
