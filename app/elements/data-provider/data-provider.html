@@ -1,0 +1,134 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="data-provider">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <iron-ajax
+      auto
+      url="{{hubId}}"
+      handle-as="json"
+      on-response="handleHubResponse"
+      debounce-duration="300"></iron-ajax>
+
+   <iron-ajax
+      auto
+      url="{{sportListId}}"
+      handle-as="json"
+      on-response="handleSportListResponse"
+      debounce-duration="300"></iron-ajax>
+
+  <iron-ajax
+      auto      
+      url="{{placeListId}}"    
+      handle-as="json"
+      on-response="handlePlaceListResponse"
+      debounce-duration="300"></iron-ajax>
+
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'data-provider',
+
+      properties: {
+        hubId: {
+          type: String,
+          value: 'http://sporthub.demo.hackers4peace.net/',
+          notify: true
+        },
+        data: {
+          type: Object,
+          value: {            
+            sports: [],
+            places: [],
+            current: {
+              sport: null,
+              place: null
+            }
+          },
+          notify: true
+        },
+        sportListId: {
+          type: String
+        },
+        placeListId: {
+          type: String
+        },
+        sportListLoaded: {
+          type: Boolean,
+          value: false          
+        },
+        placeListLoaded: {
+          type: Boolean,
+          value: false
+        },
+        dataReady: {
+          type: Boolean,          
+          notify: true,
+          computed: 'getDataReady(sportListLoaded,placeListLoaded)',
+        }
+      },
+
+      getDataReady: function (sportListLoaded, placeListLoaded) {
+          var isReady = sportListLoaded && placeListLoaded;
+
+          if (isReady) {
+            console.log('data is ready!');
+          }
+
+          return isReady;
+      },
+
+      handleHubResponse: function (e, detail) {
+        console.log('test');
+        //get the root element
+        var graph = detail.response['@graph'];                
+      
+        //get dataset      
+        var datasetId = _.find(graph, 'id', this.hubId).describes;
+        var dataset = _.find(graph, 'id', datasetId);
+
+        //get lists identifiers from dataset
+        this.sportListId = _.find(dataset['void:classPartition'], 'void:class', 'dbpo:Sport').id;
+        this.placeListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Place').id;
+      },
+
+      handleSportListResponse: function (e, detail) {
+        var respData = detail.response;
+        var graph = respData['@graph'];
+
+        this.data.sports = graph[0].contains;
+
+        this.sportListLoaded = true;
+      },
+
+      handlePlaceListResponse: function (e, detail) {
+        var respData = detail.response;
+        var graph = respData['@graph'];
+
+        this.data.places = graph[0].contains;
+
+        this.placeListLoaded = true;
+      }
+
+    });
+  })();
+  </script>
+</dom-module>
