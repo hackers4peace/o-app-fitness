@@ -46,6 +46,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild-->
 
+  <!-- FIX:  icons not showing in maps-->
+  <!-- build:css styles/leflet.css -->
+  <link rel="stylesheet" href="styles/leaflet.css">
+  <!-- endbuild-->
+
+  <!-- FIX:  icons not showing in maps-->
+  <!-- build:js scripts/leaflet.js -->
+  <script src="bower_components/leaflet/dist/leaflet.js"></script>
+  <!-- endbuild -->
+
   <!-- build:js scripts/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
@@ -68,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template is="dom-bind" id="app">
     <!-- Main Content -->
     <div class="content">
-      <data-provider></data-provider>
+      <sport-map></sport-map>
     </div>      
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
