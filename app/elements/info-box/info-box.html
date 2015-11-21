@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <hub-info sport-list="{{data.sports}}" people-list="{{data.people}}" selected-sport="{{selectedSport}}"></hub-info>
     </template>
     <template is="dom-if" if="{{data.current.place}}">     
-      <place-info place="{{data.current.place}}" timer="{{timer}}" people-list="{{data.people}}"></place-info>
+      <place-info place="{{data.current.place}}" timer="{{timer}}" data="{{data}}"></place-info>
       
     </template>
     

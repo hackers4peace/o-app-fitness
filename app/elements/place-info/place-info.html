@@ -24,9 +24,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-tab>
         <paper-tab>
            <iron-icon icon="maps:person-pin"></iron-icon>
+        </paper-tab>        
+        <paper-tab>
+            <iron-icon icon="trending-up"></iron-icon>
         </paper-tab>
-        
-        <paper-tab>Tab 3</paper-tab>
       </paper-tabs>
       <iron-pages selected="{{selectedTab}}">
           <div class="timer-control" style="text-align:center;margin:20px;padding:20px;">                  
@@ -37,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
           <div role="listbox">
            <iron-selector selected="{{selectedPersonIndex}}">
-           <template is="dom-repeat" items="{{peopleList}}">
+           <template is="dom-repeat" items="{{data.people}}">
               <paper-icon-item>
                 <iron-icon src="https://avatars3.githubusercontent.com/u/6047738?v=3&s=460" class="big" item-icon></iron-icon>
                 <div class="flex"> {{item.name}}</div>              
@@ -45,7 +46,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>        
           </iron-selector>             
           </div>                    
-          <div>Page 3</div>
+           <div role="listbox">
+           <iron-selector selected="{{selectedActivityIndex}}">
+           <template is="dom-repeat" items="{{data.activities}}">
+              <paper-icon-item>
+                <iron-icon src="" class="big" item-icon></iron-icon>
+                <div class="flex"> {{item.startTime}}</div>              
+              </paper-icon-item>
+            </template>        
+          </iron-selector>             
+          </div>              
         </iron-pages>
       </paper-material>
   </template>
@@ -75,11 +85,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         selectedPersonIndex: {
           type: Number,
           notify: true  
-        },
-        peopleList: {
+        },                
+        selectedActivityIndex: {
           type: Number,
           notify: true
-        }
+        }        
       },
       handleStartButtonClick: function() {
         this.set('timer.start', new Date());
