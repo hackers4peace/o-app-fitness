@@ -52,7 +52,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </template>        
           </iron-selector>             
           </div>
-          <div>empty</div>  
+         <div role="listbox">
+           <iron-selector selected="{{selectedPodIndex}}">
+           <template is="dom-repeat" items="{{data.pods}}">
+              <paper-icon-item>
+                <iron-icon icon="cloud-done" class="big" item-icon></iron-icon>
+                <div class="flex"> {{item}}</div>              
+              </paper-icon-item>
+            </template>        
+          </iron-selector>             
+           <template is="dom-repeat" items="{{data.hubs}}">
+              <paper-item>
+                <paper-checkbox></paper-checkbox>
+                <div class="flex"> {{item}}</div>              
+              </paper-item>
+            </template>        
+          </div>
+
         </iron-pages>
       </paper-material>
   </template>
@@ -64,6 +80,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'hub-info',
 
       properties: {
+        data: {
+          type: Object,
+          notify: true
+        },
         view: {
           type: String,
           notify: true
@@ -77,6 +97,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           value: null,
           observer: '_onSelectedSportIndexChange'
+        },
+        selectedPodIndex: {
+          type: Number,
+          value: 0,
+          observer: '_onSelectedPodIndexChange'
         },
         selectedSport: {
           type: Object,
@@ -101,6 +126,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _onSelectedPersonIndexChange: function(newval) {
         if (typeof(newval) === 'number') {        
           this.selectedPerson = this.peopleList[newval];
+        }
+      },
+      _onSelectedPodIndexChange: function(newval) {
+        if (typeof(newval) === 'number') {        
+          //this.data.current.pod = this.data.pods[newval];
         }
       },
       _onViewChanged: function(newval) {
