@@ -69,8 +69,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          this.set('data.current.activity', activity);
       },
       //set current sport here
-      _onSelectedSportChange: function(newval) {         
-         this.set('data.current.sport', newval);
+      _onSelectedSportChange: function(newval) {    
+        
+        this.async(function() {
+          this.set('data.current.sport', newval);
+        }, 200);
+         
       },
       _onViewChanged: function(newval) {        
         if (newval === 'infobox') {                  
