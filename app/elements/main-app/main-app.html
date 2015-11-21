@@ -43,6 +43,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data: {
           type: Object,
           value: {            
+              timer: {
+                  start: null,
+                  stop: null
+              },
               sports: [],
               places: [],
               people: [],
@@ -51,7 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 sport: null,
                 place: null,
                 person: null,
-                activity: null
+                activity: null                
               }
           },
           notify: true

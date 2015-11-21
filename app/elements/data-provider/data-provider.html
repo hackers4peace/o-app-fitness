@@ -58,12 +58,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-response="handleActivityListResponse"
       debounce-duration="300"></iron-ajax>
 
+    <iron-ajax
+      id="post"      
+      method="POST"
+      verbose="true"
+      url="{{activityListId}}"
+      content-type="application/json"    
+      handle-as="json"      
+      debounce-duration="300"></iron-ajax>
+
   </template>
   <script>
   (function() {
     'use strict';
 
     /* global _ */
+    /* global uuid */
 
     Polymer({
       is: 'data-provider',
@@ -87,43 +97,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         peopleListId: {
           type: String
         },
-        sportListLoaded: {
-          type: Boolean,
-          value: false          
-        },
-        placeListLoaded: {
-          type: Boolean,
-          value: false
-        },
-        peopleListLoaded: {
-          type: Boolean,
-          value: false
-        },
-        activityListLoaded: {
-          type: Boolean,
-          value: false
-        },
-        dataReady: {
-          type: Boolean,          
-          notify: true,
-          computed: 'getDataReady(sportListLoaded,placeListLoadedm,peopleListLoaded)',
+        currentActivityJson: {
+          type: String,
+          computed: '_stringifyCurrentActivity(data.current.activity)',
         }
       },
-      observers: [
-         'currentActivityChanged(data.current.activity)',
-      ],
-      currentActivityChanged: function(newval) {
-        console.log(newval);
+      observers: [         
+         '_timerStartChanged(data.timer.start)',
+         '_timerStopChanged(data.timer.stop)'
+      ],    
+      _stringifyCurrentActivity: function(activity) {
+        console.log('stringify', activity);
+        return JSON.stringify(activity);
       },
-      getDataReady: function (sportListLoaded, placeListLoaded, peopleListLoaded, activityListLoaded) {
-          var isReady = sportListLoaded && placeListLoaded && peopleListLoaded && activityListLoaded;
+      _timerStartChanged: function(newval) {
+        if (newval) {
+          this.data.current.activity = {            
+            id: uuid.v4(),
+            type:  'Activity',          
+            action: 'verb:practice',
+            object: this.data.current.sport.id,
+            location: this.data.current.place.id,
+            //FIXME date format
+            startTime: this.data.timer.start          
+          };
 
-          if (isReady) {
-            console.log('data is ready!');
-          }
+          this.$.post.body = JSON.stringify(this.data.current.activity);
+          this.$.post.generateRequest();
 
-          return isReady;
+          console.log(this.data.current.activity);
+        }
       },
+
+      _timerStopChanged: function(newval) {
+         if (newval) {
+           this.data.current.activity.stopTime = this.data.timer.stop;
+            
+           this.$.post.body = JSON.stringify(this.data.current.activity);
+           this.$.post.generateRequest();
+
+           console.log(this.data.current.activity);
+        }
+      },
+    
 
       handleHubResponse: function (e) {            
         //get the root element
@@ -134,10 +150,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var dataset = _.find(graph, 'id', datasetId);
 
         //get lists identifiers from dataset
-        this.sportListId = _.find(dataset['void:classPartition'], 'void:class', 'dbpo:Sport').id;
-        this.placeListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Place').id;
-        this.peopleListId = _.find(dataset['void:classPartition'], 'void:class', 'foaf:Person').id;
-        this.activityListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Activity').id;
+        this.sportListId = _.find(dataset.classPartition, 'entityClass', 'Sport').id;
+        this.placeListId = _.find(dataset.classPartition, 'entityClass', 'Place').id;
+        this.peopleListId = _.find(dataset.classPartition, 'entityClass', 'Person').id;
+        this.activityListId = _.find(dataset.classPartition, 'entityClass', 'Activity').id;
 
         console.log(this.peopleListId);
       },
@@ -146,18 +162,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var respData = e.detail.response;
         var graph = respData['@graph'];
 
-        this.set('data.sports', graph[0].contains);
-
-        this.sportListLoaded = true;
+        this.set('data.sports', graph[1].contains);
       },
 
       handlePlaceListResponse: function (e) {
         var respData = e.detail.response;
         var graph = respData['@graph'];
         
-        this.set('data.places', graph[0].contains);
-
-        this.placeListLoaded = true;
+        this.set('data.places', graph[1].contains);
       },
 
       handlePeopleListResponse: function (e) {
@@ -170,7 +182,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         console.log('people', graph[1].contains);
 
-        this.peopleListLoaded = true;
       },
 
        handleActivityListResponse: function (e) {
@@ -180,11 +191,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         
         //FIXME: replace hardcoded indexes
 
-        this.set('data.activities', graph[0].contains);
+        this.set('data.activities', graph[1].contains);
 
-        console.log('activities', graph[0].contains);
+        console.log('activities', graph[1].contains);
 
-        this.activityListLoaded = true;
       }
 
     });
