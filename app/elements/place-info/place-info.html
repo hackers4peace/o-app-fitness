@@ -36,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-tabs>
       <iron-pages selected="{{selectedTab}}">
           <div class="timer-control">                  
-            <timer-dialog opened="{{timerDialogOpened}}"></timer-dialog>
+            <timer-dialog opened="{{timerDialogOpened}}" timer="{{timer}}"></timer-dialog>
             <paper-button id="start-button" toggles raised noink on-click="handleStartButtonClick" autofocus>
               START
             </paper-button>
@@ -64,9 +64,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         selectedTab: {
           type: Number,
           value: 0
+        },
+        timer: {
+          type: Object,         
+          notify: true
         }
       },
       handleStartButtonClick: function() {
+        this.set('timer.start', new Date());
         this.timerDialogOpened = true;
       }
     });

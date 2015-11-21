@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
     <template is="dom-if" if="{{data.current.place}}">
      
-      <place-info place="{{data.current.place}}"></place-info>
+      <place-info place="{{data.current.place}}" timer="{{timer}}"></place-info>
     </template>
     
   </template>
@@ -47,7 +47,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           notify: true,
           observer: '_onSelectedSportChange'
-        }        
+        },
+         timer: {
+          type: Object,
+          value: {
+            start: null,
+            stop: null
+          },
+          notify: true          
+        }  
+      },
+      observers: [
+        '_timerChanged(timer.*)'
+      ],
+      _timerChanged: function(newval) {
+         console.log('Timer changed:', newval);
       },
       //set current sport here
       _onSelectedSportChange: function(newval) {         

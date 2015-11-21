@@ -73,7 +73,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         timeElapsed: {
           type: String,
           computed: 'getTimeElapsed(seconds)'
-        }      
+        },
+        timer: {
+          type: Object,
+          notify: true
+        }   
       },
 
       handleDialogOpen: function() {
@@ -103,6 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       handleStopButtonClick: function() {
         if (this.isRunning) {
+           this.set('timer.stop', new Date());
            this.stopTimer();
            this.async(function() {
               this.opened = false;

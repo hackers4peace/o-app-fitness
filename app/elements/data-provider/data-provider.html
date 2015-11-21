@@ -20,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax
       auto
+      verbose="true"
       url="{{hubId}}"
       handle-as="json"
       on-response="handleHubResponse"
@@ -27,6 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
    <iron-ajax
       auto
+      verbose="true"
       url="{{sportListId}}"
       handle-as="json"
       on-response="handleSportListResponse"
@@ -34,6 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <iron-ajax
       auto      
+      verbose="true"
       url="{{placeListId}}"    
       handle-as="json"
       on-response="handlePlaceListResponse"
@@ -95,9 +98,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return isReady;
       },
 
-      handleHubResponse: function (e, detail) {        
+      handleHubResponse: function (e) {            
         //get the root element
-        var graph = detail.response['@graph'];                
+        var graph = e.detail.response['@graph'];                
       
         //get dataset      
         var datasetId = _.find(graph, 'id', this.hubId).describes;
@@ -105,11 +108,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         //get lists identifiers from dataset
         this.sportListId = _.find(dataset['void:classPartition'], 'void:class', 'dbpo:Sport').id;
-        this.placeListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Place').id;
+        this.placeListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Place').id;   
       },
 
-      handleSportListResponse: function (e, detail) {
-        var respData = detail.response;
+      handleSportListResponse: function (e) {
+        var respData = e.detail.response;
         var graph = respData['@graph'];
 
         this.set('data.sports', graph[0].contains);
@@ -117,8 +120,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.sportListLoaded = true;
       },
 
-      handlePlaceListResponse: function (e, detail) {
-        var respData = detail.response;
+      handlePlaceListResponse: function (e) {
+        var respData = e.detail.response;
         var graph = respData['@graph'];
         
         this.set('data.places', graph[0].contains);
