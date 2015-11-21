@@ -22,22 +22,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        <paper-tab>
            <iron-icon icon="maps:directions-run"></iron-icon>
         </paper-tab>
-        <paper-tab>Tab 2</paper-tab>
-        <paper-tab>Tab 3</paper-tab>
+        <paper-tab>
+           <iron-icon icon="maps:person-pin"></iron-icon>
+        </paper-tab>        
       </paper-tabs>
-      <iron-pages selected="{{selectedTab}}">          
+      <iron-pages selected="{{selectedTab}}">   
+         <!-- sports tab -->       
          <div role="listbox">
-           <iron-selector selected="{{selectedIndex}}">
+           <iron-selector selected="{{selectedSportIndex}}">
            <template is="dom-repeat" items="{{sportList}}">
               <paper-icon-item>
                 <iron-icon src="{{item.icon}}" class="big" item-icon></iron-icon>
                 <div class="flex"> {{item.nameMap.en}}</div>              
               </paper-icon-item>
             </template>        
-          </iron-selector>             
+          </iron-selector>          
           </div>            
-          <div>Page 2</div>
-          <div>Page 3</div>
+          <!-- people tab -->
+          <div role="listbox">
+           <iron-selector selected="{{selectedPersonIndex}}">
+           <template is="dom-repeat" items="{{peopleList}}">
+              <paper-icon-item>
+                <iron-icon src="https://avatars3.githubusercontent.com/u/6047738?v=3&s=460" class="big" item-icon></iron-icon>
+                <div class="flex"> {{item.name}}</div>              
+              </paper-icon-item>
+            </template>        
+          </iron-selector>             
+          </div>                      
         </iron-pages>
       </paper-material>
   </template>
@@ -58,22 +69,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           notify: true,
           value: 0
         },
-        selectedIndex: {
+        selectedSportIndex: {
           type: Object,
           value: null,
-          observer: '_onSelectedIndexChange'
+          observer: '_onSelectedSportIndexChange'
         },
-        selected: {
+        selectedSport: {
+          type: Object,
+          notify: true
+        },
+        selectedPerson: {
           type: Object,
           notify: true
         },
         sportList: {
           type: Array
+        },
+        peopleList: {
+          type: Array
         }
       },
-      _onSelectedIndexChange: function(newval) {
+      _onSelectedSportIndexChange: function(newval) {
         if (typeof(newval) === 'number') {        
-          this.selected = this.sportList[newval];
+          this.selectedSport = this.sportList[newval];
+        }
+      },
+      _onSelectedPersonIndexChange: function(newval) {
+        if (typeof(newval) === 'number') {        
+          this.selectedPerson = this.peopleList[newval];
         }
       },
       _onViewChanged: function(newval) {

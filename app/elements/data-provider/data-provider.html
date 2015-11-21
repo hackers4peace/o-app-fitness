@@ -42,6 +42,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       on-response="handlePlaceListResponse"
       debounce-duration="300"></iron-ajax>
 
+   <iron-ajax
+      auto      
+      verbose="true"
+      url="{{peopleListId}}"    
+      handle-as="json"
+      on-response="handlePeopleListResponse"
+      debounce-duration="300"></iron-ajax>
+
   </template>
   <script>
   (function() {
@@ -68,6 +76,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         placeListId: {
           type: String
         },
+        peopleListId: {
+          type: String
+        },
         sportListLoaded: {
           type: Boolean,
           value: false          
@@ -76,10 +87,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false
         },
+        peopleListLoaded: {
+          type: Boolean,
+          value: false
+        },
         dataReady: {
           type: Boolean,          
           notify: true,
-          computed: 'getDataReady(sportListLoaded,placeListLoaded)',
+          computed: 'getDataReady(sportListLoaded,placeListLoadedm,peopleListLoaded)',
         }
       },
       observers: [
@@ -89,7 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log(newval);
       },
       getDataReady: function (sportListLoaded, placeListLoaded) {
-          var isReady = sportListLoaded && placeListLoaded;
+          var isReady = sportListLoaded && placeListLoaded && peopleListLoaded;
 
           if (isReady) {
             console.log('data is ready!');
@@ -100,15 +115,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       handleHubResponse: function (e) {            
         //get the root element
-        var graph = e.detail.response['@graph'];                
-      
+        var graph = e.detail.response['@graph'];                            
+
         //get dataset      
         var datasetId = _.find(graph, 'id', this.hubId).describes;
         var dataset = _.find(graph, 'id', datasetId);
 
         //get lists identifiers from dataset
         this.sportListId = _.find(dataset['void:classPartition'], 'void:class', 'dbpo:Sport').id;
-        this.placeListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Place').id;   
+        this.placeListId = _.find(dataset['void:classPartition'], 'void:class', 'as:Place').id;
+        this.peopleListId = _.find(dataset['void:classPartition'], 'void:class', 'foaf:Person').id;
+
+        console.log(this.peopleListId);
       },
 
       handleSportListResponse: function (e) {
@@ -127,6 +145,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('data.places', graph[0].contains);
 
         this.placeListLoaded = true;
+      },
+
+      handlePeopleListResponse: function (e) {
+        var respData = e.detail.response;
+        var graph = respData['@graph'];
+        
+        //FIXME: replace hardcoded indexes
+
+        this.set('data.people', graph[1].contains);
+
+        console.log('people', graph[1].contains);
+
+        this.peopleListLoaded = true;
       }
 
     });

@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     
     <template is="dom-if" if="{{!data.current.place}}">
-      <hub-info sport-list="{{data.sports}}" selected="{{selectedSport}}"></hub-info>
+      <hub-info sport-list="{{data.sports}}" people-list="{{data.people}}" selected-sport="{{selectedSport}}"></hub-info>
     </template>
     <template is="dom-if" if="{{data.current.place}}">
      
@@ -62,6 +62,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
       _timerChanged: function(newval) {
          console.log('Timer changed:', newval);
+         var activity = {
+            start: newval.start,
+            stop: newval.stop            
+         };
+         this.set('data.current.activity', activity);
       },
       //set current sport here
       _onSelectedSportChange: function(newval) {         
