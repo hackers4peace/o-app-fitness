@@ -17,45 +17,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-     <paper-material elevation="1">         
-      <paper-tabs selected="{{selectedTab}}">       
+     <paper-material elevation="1">
+      <paper-tabs selected="{{selectedTab}}">
        <paper-tab>
            <iron-icon icon="maps:icons:schedule"></iron-icon>
         </paper-tab>
         <paper-tab>
            <iron-icon icon="maps:person-pin"></iron-icon>
-        </paper-tab>        
+        </paper-tab>
         <paper-tab>
             <iron-icon icon="trending-up"></iron-icon>
         </paper-tab>
       </paper-tabs>
       <iron-pages selected="{{selectedTab}}">
-          <div class="timer-control" style="text-align:center;margin:20px;padding:20px;">                  
-            <timer-dialog opened="{{timerDialogOpened}}" timer="{{timer}}"></timer-dialog>
-            <paper-button id="start-button" toggles raised noink on-click="handleStartButtonClick" autofocus style="margin: 0 auto;">
-              START
-            </paper-button>
+          <div class="timer-control" style="text-align:center;margin:20px;padding:20px;">
+            <social-timer on-start="handleTimerStart" on-stop="handleTimerStop"></social-timer>
           </div>
           <div role="listbox">
            <iron-selector selected="{{selectedPersonIndex}}">
            <template is="dom-repeat" items="{{data.people}}">
               <paper-icon-item>
                 <iron-icon src="https://avatars3.githubusercontent.com/u/6047738?v=3&s=460" class="big" item-icon></iron-icon>
-                <div class="flex"> {{item.name}}</div>              
+                <div class="flex"> {{item.name}}</div>
               </paper-icon-item>
-            </template>        
-          </iron-selector>             
-          </div>                    
+            </template>
+          </iron-selector>
+          </div>
            <div role="listbox">
            <iron-selector selected="{{selectedActivityIndex}}">
            <template is="dom-repeat" items="{{data.activities}}">
               <paper-icon-item>
                 <iron-icon src="" class="big" item-icon></iron-icon>
-                <div class="flex"> {{item.startTime}}</div>              
+                <div class="flex"> {{item.startTime}}</div>
               </paper-icon-item>
-            </template>        
-          </iron-selector>             
-          </div>              
+            </template>
+          </iron-selector>
+          </div>
         </iron-pages>
       </paper-material>
   </template>
@@ -66,34 +63,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'place-info',
 
-      properties: {       
+      properties: {
         place: {
-          type: Object          
-        },
-        timerDialogOpened: {
-          type: Boolean,
-          value: false          
+          type: Object
         },
         selectedTab: {
           type: Number,
           value: 0
         },
         timer: {
-          type: Object,         
+          type: Object,
           notify: true
         },
         selectedPersonIndex: {
           type: Number,
-          notify: true  
-        },                
+          notify: true
+        },
         selectedActivityIndex: {
           type: Number,
           notify: true
-        }        
+        }
       },
-      handleStartButtonClick: function() {
+      handleTimerStart: function() {
         this.set('timer.start', new Date());
-        this.timerDialogOpened = true;
+      },
+      handleTimerStop: function() {
+        this.set('timer.stop', new Date());
       }
     });
   })();

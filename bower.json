@@ -13,7 +13,7 @@
     "leaflet-map": "~1.1.0",
     "moment": "~2.10.6",
     "node-uuid": "~1.4.7",
-    "timer-element": "https://github.com/polysocial/timer-dialog.git"
+    "social-timer": "https://github.com/polysocial/social-timer.git"
   },
   "devDependencies": {
     "web-component-tester": "*",
