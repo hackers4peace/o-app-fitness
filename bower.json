@@ -12,7 +12,8 @@
     "lodash": "~3.10.1",
     "leaflet-map": "~1.1.0",
     "moment": "~2.10.6",
-    "node-uuid": "~1.4.7"
+    "node-uuid": "~1.4.7",
+    "timer-element": "https://github.com/polysocial/timer-dialog.git"
   },
   "devDependencies": {
     "web-component-tester": "*",
